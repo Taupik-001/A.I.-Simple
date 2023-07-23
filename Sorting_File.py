@@ -89,23 +89,24 @@ if __name__ == "__main__":
     source_directory = "D:\\_Sorting-File\\"
     sorted_folders_directory = "D:\\Folder\\"
 
-    # Infinite loop to continuously categorize files and directories with a 1-second delay between iterations
     while True:
-        items_found = False  # Flag to check if any files or folders are found
+        # Get a list of all items (files and folders) in the source directory
+        items = os.listdir(source_directory)
 
-        for root, dirs, items in os.walk(source_directory):
-            # Move and sort the folders first
-            for folder in dirs:
-                folder_path = os.path.join(root, folder)
-                move_folder_to_sorted_directory(folder_path, sorted_folders_directory)
-                items_found = True  # Set the flag to True if any files or folders are found
+        # Sort the items in ascending order based on their names
+        sorted_items = sorted(items)
 
-            # Categorize and move the files
-            for item in items:
-                item_path = os.path.join(root, item)
-                categorize_file(item_path, source_directory)
-                items_found = True  # Set the flag to True if any files or folders are found
-
-        if not items_found:
+        if not sorted_items:
             print("No file or folder was found in the specified directory.")
-        time.sleep(1)  # Wait for 1 second before the next iteration
+        else:
+            # Move the first item in the sorted order and exit the script
+            first_item = sorted_items[0]
+            item_path = os.path.join(source_directory, first_item)
+
+            if os.path.isdir(item_path):
+                move_folder_to_sorted_directory(item_path, sorted_folders_directory)
+            else:
+                categorize_file(item_path, source_directory)
+
+            print("Script executed successfully. One item moved.")
+        time.sleep(0.1)  # Wait for 1 second before the next iteration
