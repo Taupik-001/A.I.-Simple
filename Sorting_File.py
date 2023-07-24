@@ -80,9 +80,17 @@ def categorize_file(file_path, source_directory):
 def move_folder_to_sorted_directory(folder_path, target_directory):
     folder_name = os.path.basename(folder_path)
     target_path = os.path.join(target_directory, folder_name)
-    if not os.path.exists(target_path):
-        shutil.move(folder_path, target_directory)
-        print(f"Folder '{folder_name}' moved to '{target_directory}'.")
+
+    # Check if the folder name already exists in the target directory
+    while os.path.exists(target_path):
+        # If it does, add a suffix to the folder name to make it unique
+        folder_name += "_1"
+        target_path = os.path.join(target_directory, folder_name)
+
+    # Move the folder to the target directory
+    shutil.move(folder_path, target_path)
+    print(f"Folder '{os.path.basename(folder_path)}' moved to '{target_path}'.")
+
 
 if __name__ == "__main__":
     # Specify the source directory to monitor
@@ -109,4 +117,4 @@ if __name__ == "__main__":
                 categorize_file(item_path, source_directory)
 
             print("Script executed successfully. One item moved.")
-        time.sleep(0.1)  # Wait for 1 second before the next iteration
+        time.sleep(2)  # Wait for 5 seconds before the next iteration
