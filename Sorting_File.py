@@ -101,25 +101,25 @@ def categorize_file(file_path, source_directory):
             move_file_with_rename(
                 file_path, os.path.join("D:\\Others", os.path.basename(file_path))
             )
+        print("Script executed successfully. One file moved.")
 
 
 def is_folder_in_use(folder_path):
     try:
-        folder_handle = win32file.CreateFile(
-            folder_path,
-            win32file.GENERIC_READ,
-            win32file.FILE_SHARE_READ
-            | win32file.FILE_SHARE_WRITE
-            | win32file.FILE_SHARE_DELETE,
-            None,
-            win32file.OPEN_EXISTING,
-            win32file.FILE_ATTRIBUTE_DIRECTORY,
-            None,
-        )
-        win32file.CloseHandle(folder_handle)
+        folder_stat = os.stat(folder_path)
+        current_last_modified = folder_stat.st_mtime
+
+        # Wait for a short period of time
+        time.sleep(0.5)
+
+        # Check the last modified timestamp again
+        folder_stat = os.stat(folder_path)
+        updated_last_modified = folder_stat.st_mtime
+
+        # If the last modified timestamp changed, it indicates that the folder is still in use
+        return current_last_modified != updated_last_modified
+    except Exception:
         return False
-    except pywintypes.error:
-        return True
 
 
 def move_folder_to_sorted_directory(folder_path, target_directory):
@@ -142,6 +142,7 @@ def move_folder_to_sorted_directory(folder_path, target_directory):
         # Move the folder to the target directory
         shutil.move(folder_path, target_path)
         print(f"Folder '{os.path.basename(folder_path)}' moved to '{target_path}'.")
+        print("Script executed successfully. One folder moved.")
 
 
 if __name__ == "__main__":
@@ -167,6 +168,4 @@ if __name__ == "__main__":
                 move_folder_to_sorted_directory(item_path, sorted_folders_directory)
             else:
                 categorize_file(item_path, source_directory)
-
-            print("Script executed successfully. One item moved.")
         time.sleep(2)  # Wait for 5 seconds before the next iteration
