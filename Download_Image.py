@@ -38,5 +38,6 @@ def download_images(url):
             print(f"Error while downloading image {img_url}: {str(e)}")
 
 if __name__ == '__main__':
-    url = "https://kiryuu.id/yuusha-ni-zenbu-ubawareta-ore-wa-yuusha-no-hahaoya-to-party-wo-kumimashita-chapter-06/"
+    url = "https://kiryuu.id/eiyuu-kyoushitsu-chapter-23-1/"
+    # url = "https://kiryuu.id/yuusha-ni-zenbu-ubawareta-ore-wa-yuusha-no-hahaoya-to-party-wo-kumimashita-chapter-06/"
     download_images(url)
